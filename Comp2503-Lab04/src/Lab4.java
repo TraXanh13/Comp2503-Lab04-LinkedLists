@@ -23,54 +23,30 @@ public class Lab4 {
 		}
 	}
 	
-	public void addInOrder(Node<String> n) {
-		Node<String> currentNode = head;
-		System.out.println("Adding: " + n.getData());
-		if(head == null) {
-			head = n;
-			tail = n;
-		}else if(head.getData().compareTo(n.getData()) > 0) {
-			addHead(n);
-		}else {
-			while (currentNode.getNext() != null) {
-				System.out.println("in the while");
-				if (currentNode.getNext().getData().compareTo(n.getData()) > 0) {
-					addInMiddle(currentNode, n);
-					break;
-				}
-				currentNode = currentNode.getNext();
-			}
-		}
-	}
-
-	private void addInMiddle(Node<String> curr, Node<String> n) {
-		n.setNext(curr);
-		curr = n;
-	}
 
 	public Node<String> find(String key) {
-		Node<String> currentNode = head;
-		while (currentNode.getNext().getData() != null) {
-			if (currentNode.getData().equals(key)) {
-				return currentNode;
+		Node<String> ptr = head;
+		while (ptr.getNext().getData() != null) {
+			if (ptr.getData().equals(key)) {
+				return ptr;
 			} else {
-				currentNode = currentNode.getNext();
+				ptr = ptr.getNext();
 			}
 		}
 		return null;
 	}
 
 	public Node<String> delete(String key) {
-		Node<String> currentNode = head;
+		Node<String> ptr = head;
 		if (head.getData().equals(key)) {
 			head = head.getNext();
 		} else {
-			while (currentNode.getNext() != null) {
-				if (currentNode.getNext().getData().equals(key)) {
-					currentNode.setNext(currentNode.getNext().getNext());
+			while (ptr.getNext() != null) {
+				if (ptr.getNext().getData().equals(key)) {
+					ptr.setNext(ptr.getNext().getNext());
 					break;
 				} else {
-					currentNode = currentNode.getNext();
+					ptr = ptr.getNext();
 				}
 			}
 		}
@@ -81,7 +57,7 @@ public class Lab4 {
 		System.out.println();
 		Node<String> currentNode = head;
 		if (head == null) {
-			System.out.println("The list is empty");
+			System.out.println("\nThe list is empty");
 		}
 		while (currentNode != null) {
 			// Visit the node. In this case, print it out.
@@ -95,6 +71,22 @@ public class Lab4 {
 		tail = null;
 	}
 
+	public void addInOrder(Node<String> n) {
+		Node<String> currentNode = head;
+		if(head == null || head.getData().compareTo(n.getData()) > 0) {
+			addHead(n);
+		} else {
+			while (currentNode.getNext() != null) {
+				if (currentNode.getData().compareTo(n.getData()) < 0) {
+					n.setNext(currentNode.getNext());
+					currentNode.setNext(n);
+					break;
+				}
+				currentNode = currentNode.getNext();
+			}
+		}
+	}
+
 	public void run() {
 		Node<String> a = new Node<String>("Athabasca");
 		Node<String> b = new Node<String>("Andromeda");
@@ -106,17 +98,17 @@ public class Lab4 {
 		addTail(a);
 		addHead(d);
 		printList();
-		System.out.println("Remove Hector");
+		System.out.println("\nRemove Hector");
 		delete("Hector");
 		printList();
 		emptyList();
 		printList();
+		System.out.println("Add in order");
 		addInOrder(a);
-		addInOrder(b);
 		addInOrder(c);
 		addInOrder(d);
+		addInOrder(b);
 		printList();
-
 	}
 
 	public static void main(String[] args) {
