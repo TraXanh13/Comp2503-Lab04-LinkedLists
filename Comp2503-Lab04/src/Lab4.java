@@ -4,9 +4,10 @@ public class Lab4 {
 
 	public void addHead(Node<String> n) {
 		// add a node to the head of the list.
-		if (head == null) {
+		if (isEmpty()) {
 			head = n;
 			tail = n;
+			// adds to the front
 		} else {
 			n.setNext(head);
 			head = n;
@@ -14,34 +15,41 @@ public class Lab4 {
 	}
 
 	public void addTail(Node<String> n) {
-		if (head == null) {
+		// adds if list is empty
+		if (isEmpty()) {
 			head = n;
 			tail = n;
+			// adds to the end
 		} else {
 			tail.setNext(n);
 			tail = n;
 		}
 	}
-	
 
 	public Node<String> find(String key) {
 		Node<String> ptr = head;
+		// loops through the list
 		while (ptr.getNext().getData() != null) {
+			// stops if the pointer is found
 			if (ptr.getData().equals(key)) {
 				return ptr;
 			} else {
 				ptr = ptr.getNext();
 			}
 		}
+		System.out.println(key + " was not found");
 		return null;
 	}
 
 	public Node<String> delete(String key) {
 		Node<String> ptr = head;
+		// removes the head and set new head
 		if (head.getData().equals(key)) {
 			head = head.getNext();
 		} else {
+			// loops through the list
 			while (ptr.getNext() != null) {
+				// deletes the found node
 				if (ptr.getNext().getData().equals(key)) {
 					ptr.setNext(ptr.getNext().getNext());
 					break;
@@ -56,7 +64,7 @@ public class Lab4 {
 	public void printList() {
 		System.out.println();
 		Node<String> currentNode = head;
-		if (head == null) {
+		if (isEmpty()) {
 			System.out.println("\nThe list is empty");
 		}
 		while (currentNode != null) {
@@ -72,19 +80,37 @@ public class Lab4 {
 	}
 
 	public void addInOrder(Node<String> n) {
-		Node<String> currentNode = head;
-		if(head == null || head.getData().compareTo(n.getData()) > 0) {
+		Node<String> currentNode;
+		// Add if head is empty or should be behind n
+		if (isEmpty() || head.getData().compareTo(n.getData()) > 0) {
 			addHead(n);
+			// Add to the end
+		} else if (tail.getData().compareTo(n.getData()) < 0) {
+			addTail(n);
 		} else {
+			currentNode = head;
+			// Keep looping until it hits the end of the list
 			while (currentNode.getNext() != null) {
-				if (currentNode.getData().compareTo(n.getData()) < 0) {
+				// Add in the middle
+				if (currentNode.getNext().getData().compareTo(n.getData()) > 0) {
 					n.setNext(currentNode.getNext());
 					currentNode.setNext(n);
+					break;
+					// Adds at the end
+				} else if (tail.getData().compareTo(n.getData()) < 0) {
+					addTail(n);
 					break;
 				}
 				currentNode = currentNode.getNext();
 			}
 		}
+	}
+
+	private boolean isEmpty() {
+		if (head == null) {
+			return true;
+		}
+		return false;
 	}
 
 	public void run() {
@@ -105,9 +131,9 @@ public class Lab4 {
 		printList();
 		System.out.println("Add in order");
 		addInOrder(a);
-		addInOrder(c);
-		addInOrder(d);
 		addInOrder(b);
+		// addInOrder(d);
+		// addInOrder(c);
 		printList();
 	}
 
