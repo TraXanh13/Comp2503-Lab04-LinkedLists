@@ -1,3 +1,5 @@
+import javax.print.DocFlavor.STRING;
+
 public class Lab4 {
 	private Node<String> head;
 	private Node<String> tail;
@@ -43,15 +45,24 @@ public class Lab4 {
 
 	public Node<String> delete(String key) {
 		Node<String> ptr = head;
+		Node<String> temp;
+		if(head == null) {
+			return null;
+		}
 		// removes the head and set new head
 		if (head.getData().equals(key)) {
+			temp = head;
 			head = head.getNext();
+			temp.setNext(null);
+			return temp;
 		} else {
 			// loops through the list
 			while (ptr.getNext() != null) {
 				// deletes the found node
 				if (ptr.getNext().getData().equals(key)) {
+					temp = ptr.getNext();
 					ptr.setNext(ptr.getNext().getNext());
+					temp.setNext(null);
 					break;
 				} else {
 					ptr = ptr.getNext();
@@ -75,8 +86,17 @@ public class Lab4 {
 	}
 
 	public void emptyList() {
-		head = null;
-		tail = null;
+		Node <String> curr = head;
+		Node<String> temp;
+		if(head == null || head.getNext() == null){
+			head = null;
+		}else {
+			while(curr.getNext() != null) {
+				temp = curr.getNext();
+				curr.setNext(null);
+				curr = temp;
+			}
+		}
 	}
 
 	public void addInOrder(Node<String> n) {
@@ -96,11 +116,7 @@ public class Lab4 {
 					n.setNext(currentNode.getNext());
 					currentNode.setNext(n);
 					break;
-					// Adds at the end
-				} else if (tail.getData().compareTo(n.getData()) < 0) {
-					addTail(n);
-					break;
-				}
+				} 
 				currentNode = currentNode.getNext();
 			}
 		}
@@ -127,13 +143,16 @@ public class Lab4 {
 		System.out.println("\nRemove Hector");
 		delete("Hector");
 		printList();
+		System.out.println("\nRemove Victoria");
+		delete("Victoria");
+		printList();
 		emptyList();
 		printList();
 		System.out.println("Add in order");
 		addInOrder(a);
 		addInOrder(b);
-		// addInOrder(d);
-		// addInOrder(c);
+		addInOrder(d);
+		addInOrder(c);
 		printList();
 	}
 
