@@ -86,16 +86,21 @@ public class Lab4 {
 	}
 
 	public void emptyList() {
-		Node <String> curr = head;
-		Node<String> temp;
+		Node <String> mover;
+		// Checks to see if the list size is 1 or 0
 		if(head == null || head.getNext() == null){
 			head = null;
+			tail = null;
 		}else {
-			while(curr.getNext() != null) {
-				temp = curr.getNext();
-				curr.setNext(null);
-				curr = temp;
+			// mover: holds the next node
+			mover = head.getNext();
+			while(mover != null) {
+				head.setNext(null);
+				head = mover;
+				mover = mover.getNext();
 			}
+			head = null;
+			tail = null;
 		}
 	}
 
